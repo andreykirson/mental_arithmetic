@@ -1,3 +1,5 @@
+package com.example.mental_arithmetic.user;
+
 import lombok.*;
 /**
  * Stores information to identify the user.

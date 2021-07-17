@@ -1,3 +1,5 @@
+package com.example.mental_arithmetic.challenge;
+
 import lombok.*;
 /**
  * This class represents a Challenge to solve a Multiplication (a * b).
