@@ -2,6 +2,7 @@
 #Stage 2
 
 ###Add front-end layer
+https://github.com/andreykirson/mental_arithmetic_front_end
 
 ### Project architecture
 ![Add front-end](https://user-images.githubusercontent.com/32255911/126067319-d9bbcc34-bf53-4ad2-84a0-3c1bc09da934.PNG)
