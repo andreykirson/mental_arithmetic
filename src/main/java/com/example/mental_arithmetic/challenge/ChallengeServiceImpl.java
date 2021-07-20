@@ -1,22 +1,46 @@
 package com.example.mental_arithmetic.challenge;
 
 import com.example.mental_arithmetic.user.User;
+import com.example.mental_arithmetic.user.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Slf4j
 @Service
-public class ChallengeServiceImpl implements ChallengeService{
+@RequiredArgsConstructor
+public class ChallengeServiceImpl implements ChallengeService {
+
+    private final UserRepository userRepository;
+    private final ChallengeAttemptRepository attemptRepository;
+
     @Override
-    public ChallengeAttempt verifyAttempt(ChallengeAttemptDTO resultAttempt) {
+    public ChallengeAttempt verifyAttempt(ChallengeAttemptDTO attemptDTO) {
+        // Check if the user already exists for that alias, otherwise create it
+        User user = userRepository.findByAlias(attemptDTO.getUserAlias())
+                .orElseGet(() -> {
+                    log.info("Creating new user with alias {}",
+                            attemptDTO.getUserAlias());
+                    return userRepository.save(
+                            new User(attemptDTO.getUserAlias())
+                    );
+                });
         // Check if the attempt is correct
-        boolean isCorrect = resultAttempt.getGuess() == resultAttempt.getFactorA() * resultAttempt.getFactorB();
-        User user = new User(null, resultAttempt.getUserAlias());
-        // Builds the domain object. Null id for now.
-        return new ChallengeAttempt(null,
+        boolean isCorrect = attemptDTO.getGuess() == attemptDTO.getFactorA() * attemptDTO.getFactorB();
+        // Stores the attempt
+        return attemptRepository.save(new ChallengeAttempt(null,
                 user,
-                resultAttempt.getFactorA(),
-                resultAttempt.getFactorB(),
-                resultAttempt.getGuess(),
+                attemptDTO.getFactorA(),
+                attemptDTO.getFactorB(),
+                attemptDTO.getGuess(),
                 isCorrect
-        );
+        ));
+    }
+
+    @Override
+    public List<ChallengeAttempt> getStatsForUser(String userAlias) {
+        return attemptRepository.findTop10ByUserAliasOrderByIdDesc(userAlias);
     }
 }
