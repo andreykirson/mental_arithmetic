@@ -1,16 +1,14 @@
 
-#Stage 2
+#Stage 3 Add data layer
 
-###Add front-end layer
+###Link for front-end layer
 https://github.com/andreykirson/mental_arithmetic_front_end
 
 ### Project architecture
-![Add front-end](https://user-images.githubusercontent.com/32255911/126067319-d9bbcc34-bf53-4ad2-84a0-3c1bc09da934.PNG)
+![Add data layer](https://user-images.githubusercontent.com/32255911/126277745-ca7c081b-6e3f-4439-a1e7-8196035f449a.PNG)
 
 ###View of menu
-![Menu](https://user-images.githubusercontent.com/32255911/126067383-35c86b1a-f8eb-4cf6-b3af-791891d6b879.PNG)
-
-
+![Add users statics in menu](https://user-images.githubusercontent.com/32255911/126277763-b78d8c55-99e0-41cb-9f19-67f32e86b173.PNG)
 ### Used technologies
 * React
 * Spring-Boot 2
@@ -18,3 +16,6 @@ https://github.com/andreykirson/mental_arithmetic_front_end
 * Maven
 * JUnit 5
 * Mockito
+* H2 in memory DB
+* Spring Data
+* Hibernate
