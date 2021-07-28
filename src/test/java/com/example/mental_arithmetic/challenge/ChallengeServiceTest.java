@@ -1,5 +1,6 @@
 package com.example.mental_arithmetic.challenge;
 
+import com.example.mental_arithmetic.serviceclients.GamificationServiceClient;
 import com.example.mental_arithmetic.user.User;
 import com.example.mental_arithmetic.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,10 +27,12 @@ class ChallengeServiceTest {
     private UserRepository userRepository;
     @Mock
     private ChallengeAttemptRepository attemptRepository;
+    @Mock
+    private GamificationServiceClient gameClient;
 
     @BeforeEach
     public void setUp() {
-        challengeService = new ChallengeServiceImpl(userRepository, attemptRepository);
+        challengeService = new ChallengeServiceImpl(userRepository, attemptRepository, gameClient);
         given(attemptRepository.save(any())).will(returnsFirstArg());
     }
 
@@ -44,6 +47,7 @@ class ChallengeServiceTest {
         // newly added lines
         verify(userRepository).save(new User("john_doe"));
         verify(attemptRepository).save(resultAttempt);
+        verify(gameClient).sendAttempt(resultAttempt);
     }
 
     @Test

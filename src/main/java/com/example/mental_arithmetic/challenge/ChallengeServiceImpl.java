@@ -1,5 +1,6 @@
 package com.example.mental_arithmetic.challenge;
 
+import com.example.mental_arithmetic.serviceclients.GamificationServiceClient;
 import com.example.mental_arithmetic.user.User;
 import com.example.mental_arithmetic.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     private final UserRepository userRepository;
     private final ChallengeAttemptRepository attemptRepository;
+    private final GamificationServiceClient gameClient;
 
     @Override
     public ChallengeAttempt verifyAttempt(ChallengeAttemptDTO attemptDTO) {
@@ -29,14 +31,22 @@ public class ChallengeServiceImpl implements ChallengeService {
                 });
         // Check if the attempt is correct
         boolean isCorrect = attemptDTO.getGuess() == attemptDTO.getFactorA() * attemptDTO.getFactorB();
+
+
         // Stores the attempt
-        return attemptRepository.save(new ChallengeAttempt(null,
+        ChallengeAttempt storedAttempt = attemptRepository.save(new ChallengeAttempt(null,
                 user,
                 attemptDTO.getFactorA(),
                 attemptDTO.getFactorB(),
                 attemptDTO.getGuess(),
                 isCorrect
         ));
+
+        // Sends the attempt to gamification and prints the response
+        boolean status = gameClient.sendAttempt(storedAttempt);
+        log.info("Gamification service response: {}", status);
+
+        return storedAttempt;
     }
 
     @Override
