@@ -6,11 +6,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ChallengeEventPub {
+
     private final AmqpTemplate amqpTemplate;
     private final String challengesTopicExchange;
 
-    public ChallengeEventPub(final AmqpTemplate amqpTemplate,
-                             @Value("${amqp.exchange.attempts}") final String challengesTopicExchange) {
+    public ChallengeEventPub(
+            final AmqpTemplate amqpTemplate,
+            @Value("${amqp.exchange.attempts}") final String challengesTopicExchange
+    ) {
         this.amqpTemplate = amqpTemplate;
         this.challengesTopicExchange = challengesTopicExchange;
     }

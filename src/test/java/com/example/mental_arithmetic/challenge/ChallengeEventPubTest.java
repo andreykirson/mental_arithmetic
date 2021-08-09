@@ -15,6 +15,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ChallengeEventPubTest {
+
     private ChallengeEventPub challengeEventPub;
 
     @Mock
@@ -45,9 +46,5 @@ class ChallengeEventPubTest {
 
     private ChallengeAttempt createTestAttempt(boolean correct) {
         return new ChallengeAttempt(1L, new User(10L, "Jhon"), 30, 40, correct ? 1200 : 1300, correct);
-    }
-
-    private ChallengeSolvedEvent solvedEvent(boolean correct) {
-        return new ChallengeSolvedEvent(1L, correct, 30, 40, 10L, "Jhon");
     }
 }
