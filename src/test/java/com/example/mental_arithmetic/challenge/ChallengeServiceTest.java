@@ -1,13 +1,14 @@
 package com.example.mental_arithmetic.challenge;
 
-import com.example.mental_arithmetic.serviceclients.GamificationServiceClient;
 import com.example.mental_arithmetic.user.User;
 import com.example.mental_arithmetic.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.amqp.core.AmqpTemplate;
 
 import java.util.Optional;
 
@@ -28,11 +29,13 @@ class ChallengeServiceTest {
     @Mock
     private ChallengeAttemptRepository attemptRepository;
     @Mock
-    private GamificationServiceClient gameClient;
+    private ChallengeEventPub challengeEventPub;
+    @Mock
+    AmqpTemplate amqpTemplate;
 
     @BeforeEach
     public void setUp() {
-        challengeService = new ChallengeServiceImpl(userRepository, attemptRepository, gameClient);
+        challengeService = new ChallengeServiceImpl(userRepository, attemptRepository, challengeEventPub);
         given(attemptRepository.save(any())).will(returnsFirstArg());
     }
 
@@ -44,10 +47,13 @@ class ChallengeServiceTest {
         ChallengeAttempt resultAttempt = challengeService.verifyAttempt(attemptDTO);
         // then
         then(resultAttempt.isCorrect()).isTrue();
+        var routingKeyCaptor = ArgumentCaptor.forClass(String.class);
+        var challengeSolvedEventCaptor = ArgumentCaptor.forClass(ChallengeSolvedEvent.class);
+        var exchangeCaptor = ArgumentCaptor.forClass(String.class);
         // newly added lines
         verify(userRepository).save(new User("john_doe"));
         verify(attemptRepository).save(resultAttempt);
-        verify(gameClient).sendAttempt(resultAttempt);
+        verify(challengeEventPub).challengeSolved(resultAttempt);
     }
 
     @Test
