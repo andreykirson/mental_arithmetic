@@ -1,9 +1,0 @@
-#spring:
-#  cloud:
-#    consul:
-#      config:
-#        enabled: true
-#        prefixes: config
-#        defaultContext: defaults
-#        profileSeparator: ','
-#        format: yaml
