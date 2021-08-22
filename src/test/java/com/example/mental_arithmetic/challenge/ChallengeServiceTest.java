@@ -30,8 +30,6 @@ class ChallengeServiceTest {
     private ChallengeAttemptRepository attemptRepository;
     @Mock
     private ChallengeEventPub challengeEventPub;
-    @Mock
-    AmqpTemplate amqpTemplate;
 
     @BeforeEach
     public void setUp() {
